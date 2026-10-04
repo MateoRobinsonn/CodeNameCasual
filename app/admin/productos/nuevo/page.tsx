@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import type { ProductStatus } from "@/lib/supabase/types";
 import { slugify } from "@/lib/utils";
+import { ImagePicker } from "@/components/admin/image-picker";
 
 async function createProduct(formData: FormData) {
   "use server";
@@ -110,100 +111,110 @@ export default async function NewProductPage({
         </p>
       )}
 
-      <form action={createProduct} className="flex flex-col gap-5">
-        <Field label="Nombre">
-          <input
-            name="name"
-            required
-            className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground"
-          />
-        </Field>
-
-        <Field label="Categoría">
-          <input
-            name="category"
-            required
-            placeholder="Conjuntos, Bodies, Pijamas..."
-            className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground"
-          />
-        </Field>
-
-        <Field label="Descripción">
-          <textarea
-            name="description"
-            rows={3}
-            className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground"
-          />
-        </Field>
-
-        <Field label="Estado">
-          <select
-            name="status"
-            defaultValue="published"
-            className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground"
-          >
-            <option value="published">Publicado</option>
-            <option value="draft">Borrador</option>
-          </select>
-        </Field>
-
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Talla">
+      <form action={createProduct} className="flex flex-col gap-6">
+        <Section title="Información del producto">
+          <Field label="Nombre">
             <input
-              name="size"
+              name="name"
               required
-              placeholder="S, M, L"
-              className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground"
+              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
             />
           </Field>
-          <Field label="Color">
-            <input
-              name="color"
-              required
-              className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground"
-            />
-          </Field>
-        </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Precio (COP)">
+          <Field label="Categoría">
             <input
-              name="price"
-              type="number"
-              min={0}
+              name="category"
               required
-              placeholder="89000"
-              className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground"
+              placeholder="Conjuntos, Bodies, Pijamas..."
+              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
             />
           </Field>
-          <Field label="Stock">
-            <input
-              name="stock"
-              type="number"
-              min={0}
-              defaultValue={0}
-              className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground"
-            />
-          </Field>
-        </div>
 
-        <Field label="Imagen (opcional)">
-          <input
-            name="image"
-            type="file"
-            accept="image/png,image/jpeg,image/webp"
-            className="text-sm text-muted-foreground"
-          />
-        </Field>
+          <Field label="Descripción">
+            <textarea
+              name="description"
+              rows={3}
+              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+            />
+          </Field>
+
+          <Field label="Estado">
+            <select
+              name="status"
+              defaultValue="published"
+              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+            >
+              <option value="published">Publicado</option>
+              <option value="draft">Borrador</option>
+            </select>
+          </Field>
+        </Section>
+
+        <Section title="Primera variante">
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Talla">
+              <input
+                name="size"
+                required
+                placeholder="S, M, L"
+                className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+              />
+            </Field>
+            <Field label="Color">
+              <input
+                name="color"
+                required
+                className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+              />
+            </Field>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Precio (COP)">
+              <input
+                name="price"
+                type="number"
+                min={0}
+                required
+                placeholder="89000"
+                className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+              />
+            </Field>
+            <Field label="Stock">
+              <input
+                name="stock"
+                type="number"
+                min={0}
+                defaultValue={0}
+                className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+              />
+            </Field>
+          </div>
+        </Section>
+
+        <Section title="Foto">
+          <ImagePicker name="image" />
+        </Section>
 
         <button
           type="submit"
-          className="mt-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:opacity-90"
+          className="rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
         >
           Crear producto
         </button>
       </form>
     </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <section className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
+      <h2 className="text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground">
+        {title}
+      </h2>
+      {children}
+    </section>
   );
 }
 
