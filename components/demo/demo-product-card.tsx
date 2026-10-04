@@ -6,7 +6,7 @@ import { formatCop } from "@/lib/utils";
 export function DemoProductCard({ product }: { product: DemoProduct }) {
   return (
     <div className="group flex flex-col gap-3">
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl">
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
         {product.photoPath ? (
           <Image
             src={product.photoPath}
