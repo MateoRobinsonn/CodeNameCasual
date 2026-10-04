@@ -2,21 +2,29 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export function ImagePicker({ name }: { name: string }) {
+export function ImagePicker({
+  name,
+  initialImageUrl,
+}: {
+  name: string;
+  initialImageUrl?: string | null;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(initialImageUrl ?? null);
   const [fileName, setFileName] = useState<string | null>(null);
 
   useEffect(() => {
     return () => {
-      if (preview) URL.revokeObjectURL(preview);
+      // Only ever revokes blob: URLs we created ourselves — revoking a
+      // remote initialImageUrl would be a no-op, never an error.
+      if (preview && preview !== initialImageUrl) URL.revokeObjectURL(preview);
     };
-  }, [preview]);
+  }, [preview, initialImageUrl]);
 
   function handleChange() {
     const file = inputRef.current?.files?.[0];
     if (!file) {
-      setPreview(null);
+      setPreview(initialImageUrl ?? null);
       setFileName(null);
       return;
     }
@@ -26,7 +34,7 @@ export function ImagePicker({ name }: { name: string }) {
 
   function clear() {
     if (inputRef.current) inputRef.current.value = "";
-    setPreview(null);
+    setPreview(initialImageUrl ?? null);
     setFileName(null);
   }
 
@@ -43,14 +51,16 @@ export function ImagePicker({ name }: { name: string }) {
 
       {preview ? (
         <div className="flex items-center gap-4 rounded-2xl border border-border bg-card p-3">
-          {/* eslint-disable-next-line @next/next/no-img-element -- local object URL preview, not an optimizable remote image */}
+          {/* eslint-disable-next-line @next/next/no-img-element -- renders either a local blob: preview or a remote Supabase URL, neither worth running through next/image here */}
           <img
             src={preview}
             alt=""
             className="h-20 w-16 rounded-lg object-cover"
           />
           <div className="flex min-w-0 flex-1 flex-col gap-1">
-            <p className="truncate text-sm text-card-foreground">{fileName}</p>
+            <p className="truncate text-sm text-card-foreground">
+              {fileName ?? "Imagen actual"}
+            </p>
             <div className="flex gap-3 text-xs">
               <button
                 type="button"
@@ -59,13 +69,15 @@ export function ImagePicker({ name }: { name: string }) {
               >
                 Cambiar
               </button>
-              <button
-                type="button"
-                onClick={clear}
-                className="text-muted-foreground underline underline-offset-2 hover:text-primary"
-              >
-                Quitar
-              </button>
+              {fileName && (
+                <button
+                  type="button"
+                  onClick={clear}
+                  className="text-muted-foreground underline underline-offset-2 hover:text-primary"
+                >
+                  {initialImageUrl ? "Deshacer" : "Quitar"}
+                </button>
+              )}
             </div>
           </div>
         </div>

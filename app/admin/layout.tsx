@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { AdminBottomNav } from "@/components/admin/admin-bottom-nav";
 
 async function signOut() {
   "use server";
@@ -31,8 +32,18 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="min-h-screen bg-muted">
-      <header className="border-b border-border bg-card">
+    // On mobile this is an exact-height flex shell (header, scrollable
+    // main, bottom nav) instead of a fixed-position bottom bar: iOS
+    // Safari/Chrome only reconcile `position: fixed; bottom: 0` against
+    // the real viewport once the page scrolls, so on short pages (nothing
+    // to scroll) the toolbar never collapses and a fixed bar ends up
+    // stranded mid-page instead of pinned to the bottom. Pinning it via
+    // flexbox instead — nav as the last flex child of a column that's
+    // exactly 100dvh tall — sidesteps that bug entirely. Desktop drops
+    // the height constraint and scrolls the page normally, as before.
+    <div className="flex h-dvh flex-col bg-muted md:h-auto md:min-h-screen">
+      {/* Desktop: full top bar with inline nav + account controls. */}
+      <header className="hidden shrink-0 border-b border-border bg-card md:block">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
           <Link href="/admin" className="font-display text-lg text-foreground">
             Panel · Íntimo y Casual
@@ -60,7 +71,30 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
           )}
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
+
+      {/* Mobile: slim top bar, just the brand + sign out — primary nav
+          lives in the bottom tab bar instead, within thumb reach. */}
+      <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-4 md:hidden">
+        <Link href="/admin" className="font-display text-base text-foreground">
+          Íntimo y Casual
+        </Link>
+        {user && (
+          <form action={signOut}>
+            <button
+              type="submit"
+              className="rounded-md border border-border px-3 py-1.5 text-sm text-foreground hover:bg-secondary"
+            >
+              Salir
+            </button>
+          </form>
+        )}
+      </header>
+
+      <main className="mx-auto w-full max-w-5xl flex-1 overflow-y-auto px-4 py-8">
+        {children}
+      </main>
+
+      {user && <AdminBottomNav />}
     </div>
   );
 }

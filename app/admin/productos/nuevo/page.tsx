@@ -1,11 +1,11 @@
 import { randomUUID } from "node:crypto";
-import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import type { ProductStatus } from "@/lib/supabase/types";
 import { slugify } from "@/lib/utils";
 import { ImagePicker } from "@/components/admin/image-picker";
+import { Section, Field, fieldInputClass } from "@/components/admin/product-form-fields";
 
 async function createProduct(formData: FormData) {
   "use server";
@@ -117,7 +117,7 @@ export default async function NewProductPage({
             <input
               name="name"
               required
-              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+              className={fieldInputClass}
             />
           </Field>
 
@@ -126,7 +126,7 @@ export default async function NewProductPage({
               name="category"
               required
               placeholder="Conjuntos, Bodies, Pijamas..."
-              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+              className={fieldInputClass}
             />
           </Field>
 
@@ -134,7 +134,7 @@ export default async function NewProductPage({
             <textarea
               name="description"
               rows={3}
-              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+              className={fieldInputClass}
             />
           </Field>
 
@@ -142,7 +142,7 @@ export default async function NewProductPage({
             <select
               name="status"
               defaultValue="published"
-              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+              className={fieldInputClass}
             >
               <option value="published">Publicado</option>
               <option value="draft">Borrador</option>
@@ -157,14 +157,14 @@ export default async function NewProductPage({
                 name="size"
                 required
                 placeholder="S, M, L"
-                className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+                className={fieldInputClass}
               />
             </Field>
             <Field label="Color">
               <input
                 name="color"
                 required
-                className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+                className={fieldInputClass}
               />
             </Field>
           </div>
@@ -177,7 +177,7 @@ export default async function NewProductPage({
                 min={0}
                 required
                 placeholder="89000"
-                className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+                className={fieldInputClass}
               />
             </Field>
             <Field label="Stock">
@@ -186,7 +186,7 @@ export default async function NewProductPage({
                 type="number"
                 min={0}
                 defaultValue={0}
-                className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
+                className={fieldInputClass}
               />
             </Field>
           </div>
@@ -204,31 +204,5 @@ export default async function NewProductPage({
         </button>
       </form>
     </div>
-  );
-}
-
-function Section({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
-      <h2 className="text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground">
-        {title}
-      </h2>
-      {children}
-    </section>
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <label className="flex flex-col gap-1.5">
-      <span className="text-sm text-foreground">{label}</span>
-      {children}
-    </label>
   );
 }

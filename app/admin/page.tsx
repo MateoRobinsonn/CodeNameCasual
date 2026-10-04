@@ -74,7 +74,7 @@ export default async function AdminDashboardPage() {
         </div>
         <Link
           href="/admin/productos/nuevo"
-          className="inline-block rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90"
+          className="block w-full rounded-full bg-primary px-5 py-3 text-center text-sm font-medium text-primary-foreground hover:opacity-90 sm:inline-block sm:w-auto sm:py-2.5"
         >
           Agregar producto
         </Link>
@@ -83,7 +83,7 @@ export default async function AdminDashboardPage() {
         </p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 border-t border-border pt-8 pb-4">
         <h2 className="font-display text-lg text-foreground">Enlaces útiles</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {usefulLinks().map((link) => (

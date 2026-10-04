@@ -1,4 +1,23 @@
 import type { NextConfig } from "next";
+import os from "node:os";
+
+// Every non-loopback IPv4 address actually bound to this machine's network
+// interfaces (LAN wifi, VPN, etc.) — never anything from request data, so
+// this can't be used by a third party to get their origin allow-listed.
+// Recomputed on every `next dev` start, so it tracks network changes
+// automatically instead of needing a hardcoded IP kept in sync by hand.
+function getLanDevOrigins(): string[] {
+  const interfaces = os.networkInterfaces();
+  const origins: string[] = [];
+  for (const addresses of Object.values(interfaces)) {
+    for (const address of addresses ?? []) {
+      if (address.family === "IPv4" && !address.internal) {
+        origins.push(address.address);
+      }
+    }
+  }
+  return origins;
+}
 
 const supabaseProjectRef = process.env.NEXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
@@ -36,6 +55,13 @@ const nextConfig: NextConfig = {
       ? [{ protocol: "https", hostname: supabaseProjectRef, pathname: "/storage/v1/object/public/**" }]
       : [],
   },
+  // Dev server only binds trust to "localhost" by default, so loading it
+  // from another device over wifi (http://<lan-ip>:3001) gets every
+  // /_next/* script chunk 403'd as a cross-origin request — the page
+  // renders its server HTML but never hydrates. Allow-list this machine's
+  // actual LAN IP(s) so phones/tablets on the same network can load the
+  // dev server, without opening it up to arbitrary origins.
+  ...(isProd ? {} : { allowedDevOrigins: getLanDevOrigins() }),
   experimental: {
     // Matches the 5MB cap on the product-images storage bucket
     // (supabase/migrations/0002_storage.sql), plus headroom for the
