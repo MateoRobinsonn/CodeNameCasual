@@ -12,7 +12,10 @@ const isProd = process.env.NODE_ENV === "production";
 // later, extend script-src/frame-src/connect-src with checkout.wompi.co then.
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  // 'unsafe-eval' only in dev: Next/React's Fast Refresh and error-overlay
+  // stack-trace reconstruction use eval(), but — per React's own warning —
+  // never in a production build, so prod stays without it.
+  `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: https://*.supabase.co`,
   "font-src 'self' data:",
