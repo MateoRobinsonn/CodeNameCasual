@@ -37,13 +37,13 @@ export default async function AdminProductsPage() {
               <li key={product.id}>
                 <Link
                   href={`/admin/productos/${product.id}`}
-                  className="flex items-center justify-between gap-4 px-4 py-3 text-sm hover:bg-secondary"
+                  className="flex flex-col gap-2 px-4 py-4 text-sm hover:bg-secondary sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-3"
                 >
-                  <div>
-                    <p className="text-card-foreground">{product.name}</p>
-                    <p className="text-muted-foreground">/{product.slug}</p>
+                  <div className="min-w-0">
+                    <p className="truncate text-card-foreground">{product.name}</p>
+                    <p className="truncate text-muted-foreground">/{product.slug}</p>
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-between gap-4 sm:justify-end">
                     {prices.length > 0 && (
                       <span className="text-muted-foreground">
                         {formatCop(Math.min(...prices))}
