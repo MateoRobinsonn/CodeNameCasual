@@ -10,7 +10,11 @@ type UsefulLink = {
 };
 
 function usefulLinks(): UsefulLink[] {
-  const links: UsefulLink[] = [
+  // Just the tools Diana actually touches day to day — the Supabase
+  // dashboard (raw database/storage access) used to be listed here too,
+  // but that's a developer tool, not something a store owner should be
+  // poking around in directly.
+  return [
     {
       label: "Ver tienda en vivo",
       description: "Así la ven tus clientas ahora mismo.",
@@ -32,18 +36,6 @@ function usefulLinks(): UsefulLink[] {
       href: "/politicas/envios",
     },
   ];
-
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  if (supabaseUrl) {
-    const projectRef = new URL(supabaseUrl).hostname.split(".")[0];
-    links.splice(2, 0, {
-      label: "Panel de Supabase",
-      description: "Base de datos, imágenes de productos y usuarios.",
-      href: `https://supabase.com/dashboard/project/${projectRef}`,
-    });
-  }
-
-  return links;
 }
 
 export default async function AdminDashboardPage() {

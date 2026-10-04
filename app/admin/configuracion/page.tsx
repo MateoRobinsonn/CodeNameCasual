@@ -37,7 +37,6 @@ export default async function AdminSettingsPage({
   } = await supabase.auth.getUser();
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
   return (
     <div className="max-w-xl space-y-10">
@@ -83,15 +82,8 @@ export default async function AdminSettingsPage({
               {whatsappNumber ?? "No configurado"}
             </p>
           </div>
-          <div>
-            <p className="text-muted-foreground">Proyecto de Supabase</p>
-            <p className="mt-1 text-card-foreground">
-              {supabaseUrl ?? "No configurado"}
-            </p>
-          </div>
           <p className="text-muted-foreground">
-            Estos valores se configuran en el entorno de despliegue (Vercel),
-            no aquí. Pide ayuda a tu desarrollador para cambiarlos.
+            Para cambiar este número, pide ayuda a tu desarrollador.
           </p>
         </div>
       </section>
