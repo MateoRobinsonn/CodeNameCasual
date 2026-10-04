@@ -40,8 +40,12 @@ export async function proxy(request: NextRequest) {
 
   const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
   const isLoginRoute = request.nextUrl.pathname === "/admin/login";
+  // Reached from the password-reset email before a session cookie exists —
+  // the recovery token is only in the URL, which the browser client
+  // exchanges for a session client-side after this page renders.
+  const isPasswordResetRoute = request.nextUrl.pathname === "/admin/restablecer-contrasena";
 
-  if (isAdminRoute && !isLoginRoute && !user) {
+  if (isAdminRoute && !isLoginRoute && !isPasswordResetRoute && !user) {
     const loginUrl = new URL("/admin/login", request.url);
     loginUrl.searchParams.set("next", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);

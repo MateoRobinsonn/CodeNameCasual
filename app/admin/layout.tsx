@@ -38,15 +38,25 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
             Panel · Íntimo y Casual
           </Link>
           {user && (
-            <form action={signOut} className="flex items-center gap-3 text-sm">
-              <span className="text-muted-foreground">{user.email}</span>
-              <button
-                type="submit"
-                className="rounded-md border border-border px-3 py-1 text-foreground hover:bg-secondary"
-              >
-                Salir
-              </button>
-            </form>
+            <div className="flex items-center gap-5 text-sm">
+              <nav className="flex items-center gap-4 text-muted-foreground">
+                <Link href="/admin/productos" className="hover:text-foreground">
+                  Productos
+                </Link>
+                <Link href="/admin/configuracion" className="hover:text-foreground">
+                  Configuración
+                </Link>
+              </nav>
+              <form action={signOut} className="flex items-center gap-3">
+                <span className="text-muted-foreground">{user.email}</span>
+                <button
+                  type="submit"
+                  className="rounded-md border border-border px-3 py-1 text-foreground hover:bg-secondary"
+                >
+                  Salir
+                </button>
+              </form>
+            </div>
           )}
         </div>
       </header>
