@@ -17,53 +17,58 @@ export default async function HomePage() {
       <main className="flex-1">
         {DEMO_MODE ? <DemoHero /> : <RealHero />}
 
-        {DEMO_MODE &&
-          DEMO_COLLECTIONS.map((collection, index) => (
-            <div key={collection.name}>
-              <CollectionSection
-                eyebrow={collection.eyebrow}
-                title={collection.name}
-                tinted={index % 2 === 1}
-              />
-              {index < DEMO_COLLECTIONS.length - 1 && <EditorialDivider index={index} />}
-            </div>
-          ))}
+        {/*
+          One continuous side-to-side gradient behind everything below the
+          hero, instead of each section carrying its own — stacking
+          separate vertical gradients created a visible seam at every
+          section boundary. This is a single background paint, so there's
+          nothing to seam.
+        */}
+        <div className="bg-gradient-to-r from-accent/20 via-background to-accent/20">
+          {DEMO_MODE &&
+            DEMO_COLLECTIONS.map((collection, index) => (
+              <div key={collection.name}>
+                <CollectionSection eyebrow={collection.eyebrow} title={collection.name} />
+                {index < DEMO_COLLECTIONS.length - 1 && <EditorialDivider index={index} />}
+              </div>
+            ))}
 
-        {(!DEMO_MODE || products.length > 0) && (
-          <section className="bg-gradient-to-b from-accent/30 to-transparent">
-            <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
-              <Reveal>
-                <div className="mb-8 flex items-center justify-between">
-                  <h2 className="font-display text-2xl text-foreground">
-                    {DEMO_MODE ? "Recién publicado" : "Destacados"}
-                  </h2>
-                  {products.length > 0 && (
-                    <Link
-                      href="/productos"
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      Ver todo
-                    </Link>
+          {(!DEMO_MODE || products.length > 0) && (
+            <section>
+              <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
+                <Reveal>
+                  <div className="mb-8 flex items-center justify-between">
+                    <h2 className="font-display text-2xl text-foreground">
+                      {DEMO_MODE ? "Recién publicado" : "Destacados"}
+                    </h2>
+                    {products.length > 0 && (
+                      <Link
+                        href="/productos"
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        Ver todo
+                      </Link>
+                    )}
+                  </div>
+
+                  {products.length > 0 ? (
+                    <ul className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
+                      {products.slice(0, 8).map((product) => (
+                        <li key={product.slug}>
+                          <ProductCard product={product} />
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
+                      Aún no hay productos publicados.
+                    </p>
                   )}
-                </div>
-
-                {products.length > 0 ? (
-                  <ul className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
-                    {products.slice(0, 8).map((product) => (
-                      <li key={product.slug}>
-                        <ProductCard product={product} />
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
-                    Aún no hay productos publicados.
-                  </p>
-                )}
-              </Reveal>
-            </div>
-          </section>
-        )}
+                </Reveal>
+              </div>
+            </section>
+          )}
+        </div>
       </main>
       <SiteFooter />
     </>
@@ -125,25 +130,11 @@ function DemoHero() {
   );
 }
 
-function CollectionSection({
-  eyebrow,
-  title,
-  tinted,
-}: {
-  eyebrow: string;
-  title: string;
-  tinted: boolean;
-}) {
+function CollectionSection({ eyebrow, title }: { eyebrow: string; title: string }) {
   const items = demoProductsByCollection(title);
 
   return (
-    <section
-      className={
-        tinted
-          ? "bg-gradient-to-b from-accent/45 via-accent/15 to-transparent"
-          : undefined
-      }
-    >
+    <section>
       <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
         <Reveal>
           <div className="mb-8 flex items-end justify-between">
