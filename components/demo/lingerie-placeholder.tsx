@@ -1,10 +1,13 @@
 import type { DemoSilhouette, DemoTone } from "@/lib/demo/products";
 
+// All four lean pink-to-white, just at different intensities/angles, so the
+// product grid reads as one cohesive gradient language rather than four
+// unrelated pastels.
 const TONE_GRADIENTS: Record<DemoTone, string> = {
-  blush: "from-[#fbe9eb] to-[#f1c9ce]",
-  cream: "from-[#f8f3ec] to-[#e9dcc8]",
-  sage: "from-[#eef1ea] to-[#d8e2cc]",
-  terracotta: "from-[#f5e3da] to-[#e3b79f]",
+  blush: "from-[#f6c6cc] via-[#fbe3e6] to-white",
+  cream: "from-[#fbe9eb] via-[#fdf4f5] to-white",
+  sage: "from-[#f3d2d8] via-[#fcebed] to-white",
+  terracotta: "from-[#eeb3bd] via-[#f8dbdf] to-white",
 };
 
 /** Minimal line-art stand-ins for product photography — no real images on this branch. */

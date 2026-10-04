@@ -3,7 +3,7 @@ import { CartLink } from "@/components/cart-link";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-gradient-to-b from-accent/70 to-background/90 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4">
         <Link
           href="/"

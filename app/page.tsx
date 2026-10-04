@@ -30,36 +30,38 @@ export default async function HomePage() {
           ))}
 
         {(!DEMO_MODE || products.length > 0) && (
-          <section className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
-            <Reveal>
-              <div className="mb-8 flex items-center justify-between">
-                <h2 className="font-display text-2xl text-foreground">
-                  {DEMO_MODE ? "Recién publicado" : "Destacados"}
-                </h2>
-                {products.length > 0 && (
-                  <Link
-                    href="/productos"
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    Ver todo
-                  </Link>
-                )}
-              </div>
+          <section className="bg-gradient-to-b from-accent/30 to-transparent">
+            <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
+              <Reveal>
+                <div className="mb-8 flex items-center justify-between">
+                  <h2 className="font-display text-2xl text-foreground">
+                    {DEMO_MODE ? "Recién publicado" : "Destacados"}
+                  </h2>
+                  {products.length > 0 && (
+                    <Link
+                      href="/productos"
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      Ver todo
+                    </Link>
+                  )}
+                </div>
 
-              {products.length > 0 ? (
-                <ul className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
-                  {products.slice(0, 8).map((product) => (
-                    <li key={product.slug}>
-                      <ProductCard product={product} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
-                  Aún no hay productos publicados.
-                </p>
-              )}
-            </Reveal>
+                {products.length > 0 ? (
+                  <ul className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
+                    {products.slice(0, 8).map((product) => (
+                      <li key={product.slug}>
+                        <ProductCard product={product} />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
+                    Aún no hay productos publicados.
+                  </p>
+                )}
+              </Reveal>
+            </div>
           </section>
         )}
       </main>
@@ -70,23 +72,25 @@ export default async function HomePage() {
 
 function RealHero() {
   return (
-    <section className="mx-auto max-w-3xl px-4 py-20 text-center sm:py-28">
-      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-        Colombia · Envíos discretos
-      </p>
-      <h1 className="mt-4 font-display text-4xl leading-tight text-foreground sm:text-5xl">
-        Lencería pensada para ti
-      </h1>
-      <p className="mx-auto mt-4 max-w-md text-muted-foreground">
-        Catálogo, tallas y colores curados con cuidado. Compra segura,
-        pronto disponible directamente desde aquí.
-      </p>
-      <Link
-        href="/productos"
-        className="mt-8 inline-block rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-      >
-        Ver catálogo
-      </Link>
+    <section className="bg-gradient-to-br from-[#fbe9eb] via-[#f8f3ec] to-background px-4 py-20 text-center sm:py-28">
+      <div className="mx-auto max-w-3xl">
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+          Colombia · Envíos discretos
+        </p>
+        <h1 className="mt-4 font-display text-4xl leading-tight text-foreground sm:text-5xl">
+          Lencería pensada para ti
+        </h1>
+        <p className="mx-auto mt-4 max-w-md text-muted-foreground">
+          Catálogo, tallas y colores curados con cuidado. Compra segura,
+          pronto disponible directamente desde aquí.
+        </p>
+        <Link
+          href="/productos"
+          className="mt-8 inline-block rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+        >
+          Ver catálogo
+        </Link>
+      </div>
     </section>
   );
 }
@@ -133,7 +137,13 @@ function CollectionSection({
   const items = demoProductsByCollection(title);
 
   return (
-    <section className={tinted ? "bg-secondary/60" : undefined}>
+    <section
+      className={
+        tinted
+          ? "bg-gradient-to-b from-accent/45 via-accent/15 to-transparent"
+          : undefined
+      }
+    >
       <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
         <Reveal>
           <div className="mb-8 flex items-end justify-between">
@@ -172,7 +182,7 @@ const DIVIDER_COPY = [
 function EditorialDivider({ index }: { index: number }) {
   return (
     <div className="mx-auto max-w-6xl px-4">
-      <Reveal className="flex items-center justify-center rounded-3xl bg-gradient-to-r from-[#f5e3da] via-[#f8f3ec] to-[#fbe9eb] px-6 py-16 text-center sm:py-20">
+      <Reveal className="flex items-center justify-center rounded-3xl bg-gradient-to-r from-accent via-[#fdf4f5] to-background px-6 py-16 text-center sm:py-20">
         <p className="max-w-lg font-display text-2xl italic leading-snug text-foreground sm:text-3xl">
           {DIVIDER_COPY[index % DIVIDER_COPY.length]}
         </p>
