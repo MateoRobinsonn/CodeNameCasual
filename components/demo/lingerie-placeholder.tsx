@@ -68,7 +68,9 @@ export function LingeriePlaceholder({
     <div
       className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${TONE_GRADIENTS[tone]} ${className ?? ""}`}
     >
-      <div className="h-2/5 w-2/5 text-foreground/35">
+      {/* Fixed dark tone, not the theme-reactive foreground token — the
+          gradient behind it is always light regardless of OS theme. */}
+      <div className="h-2/5 w-2/5 text-neutral-900/35">
         <SilhouetteIcon silhouette={silhouette} />
       </div>
     </div>

@@ -88,15 +88,19 @@ function RealHero() {
 }
 
 function DemoHero() {
+  // This panel's gradient is always light, regardless of OS theme, so its
+  // text uses fixed neutral-* colors instead of the theme-reactive
+  // foreground/muted-foreground tokens (those flip to near-white in dark
+  // mode and vanish against the pastel background).
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#fbe9eb] via-[#f8f3ec] to-[#eef1ea] px-4 py-28 text-center sm:py-36">
-      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+      <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
         Colombia · Envíos discretos
       </p>
-      <h1 className="mx-auto mt-4 max-w-2xl font-display text-5xl leading-tight text-foreground sm:text-6xl">
+      <h1 className="mx-auto mt-4 max-w-2xl font-display text-5xl leading-tight text-neutral-900 sm:text-6xl">
         Lencería pensada para ti
       </h1>
-      <p className="mx-auto mt-4 max-w-md text-muted-foreground">
+      <p className="mx-auto mt-4 max-w-md text-neutral-600">
         Catálogo, tallas y colores curados con cuidado. Compra segura,
         pronto disponible directamente desde aquí.
       </p>
@@ -150,7 +154,7 @@ function EditorialDivider({ index }: { index: number }) {
   return (
     <div className="mx-auto max-w-6xl px-4">
       <div className="flex items-center justify-center rounded-3xl bg-gradient-to-r from-[#f5e3da] via-[#f8f3ec] to-[#eef1ea] px-6 py-16 text-center sm:py-20">
-        <p className="max-w-lg font-display text-2xl italic leading-snug text-foreground sm:text-3xl">
+        <p className="max-w-lg font-display text-2xl italic leading-snug text-neutral-900 sm:text-3xl">
           {DIVIDER_COPY[index % DIVIDER_COPY.length]}
         </p>
       </div>
